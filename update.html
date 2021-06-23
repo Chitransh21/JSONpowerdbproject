@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>L2E Mini Project</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="http://login2explore.com/jpdb/resources/js/0.0.3/jpdb-commons.js"></script>
+
+        <style>
+            #header {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      color: white;
+      vertical-align: middle;
+      height: 30px;
+      width: 100%;
+      background: rgba(0,0, 0, 0.7);
+      font-weight: 5;
+      border-bottom-left-radius: 300px;
+      border-bottom-right-radius: 300px;
+      padding-bottom: 20px;
+      position: fixed;
+      text-align: center;
+      padding-top: 20px;
+      top: 0;
+      z-index: 99;
+  }
+  
+  .container{
+      margin: 72px 57px;
+      background-color: aliceblue;
+      padding: 18px;
+  }
+  </style>
+
+    </head>
+    <body>
+    <center id="header" style="font-size: 12px"><h1>Update a record</h1></center>
+    <center class="container"><input id="enrollno" maxlength="50" style="font-size: 25px" placeholder="Enroll No" name="enrollno" type="text" /><br><br>
+        <p>You can change your password Email Id.</p>
+        <input id="email" maxlength="50" style="font-size: 25px" placeholder="Email Id" name="email" type="email" /><br><br>
+        <input type="button" value="UPDATE DATA" style="font-size: 25px" onclick="updateData();"/></center>
+    <p id="show"></p>
+    <script>
+        function executeCommand(reqString, dbBaseUrl, apiEndPointUrl) {
+            var url = dbBaseUrl + apiEndPointUrl;
+            var jsonObj;
+            $.post(url, reqString, function (result) {
+                jsonObj = JSON.parse(result);
+            }).fail(function (result) {
+                var dataJsonObj = result.responseText;
+                jsonObj = JSON.parse(dataJsonObj);
+            });
+            return jsonObj;
+        }
+        function createUPDATERecordRequest(token, jsonObj, dbName, relName, enroll) {
+            var req = "{\n"
+                + "\"token\" : \""
+                + token
+                + "\","
+                + "\"dbName\": \""
+                + dbName
+                + "\",\n" + "\"cmd\" : \"UPDATE\",\n"
+                + "\"rel\" : \""
+                + relName
+                + "\",\n"
+                + "\"jsonStr\":{ \""
+                + reqId
+                + "\":\n"
+                + jsonObj
+                + "\n"
+                + "}}";
+            return enroll;
+        }
+
+        function updateData(){
+            var token = "90935979|-31948846616952502|90934142";
+            var dbname = "StudentDetails";
+            var relationName = "Student-Data";
+            var enroll = parseInt(document.getElementById("enrollno").value);
+            var email = document.getElementById("email").value;
+
+            var jsonObj = {
+                EmailId : email,
+            };
+            var reqString = createUPDATERecordRequest(token, JSON.stringify(jsonObj), dbname, relationName, enroll);
+            alert(reqString);
+            jQuery.ajaxSetup({async: false});
+            var resultObj = executeCommand(reqString,
+                    "http://api.login2explore.com:5577", "/api/iml");
+            jQuery.ajaxSetup({async: true});
+            alert(JSON.stringify(resultObj));
+
+        }
+    </script>
+    </body>
+</html>
