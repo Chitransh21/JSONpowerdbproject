@@ -3,6 +3,7 @@ This mini-project performs CRUD operations using JsonPowerDB.
 JsonPowerDB is a high performance, creative and disruptive multi-mode DBMS.
 
 Some features of JsonPowerDB are:
+
 Nimble, simple to use, in memory, real time
 Schema free - easy to maintain
 Serverless support - fast development - cuts time to market
